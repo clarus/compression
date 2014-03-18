@@ -16,7 +16,13 @@ double entropy(FILE * file) {
     bytes_read++;
     occurencies[c]++;
   }
-  printf("Bytes read: %d\n", bytes_read);
+  printf("DEBUG Bytes read: %d\n", bytes_read);
+
+  double frequencies[256];
+  for (int i = 0; i < 256; i++)
+    frequencies[i] = (double) occurencies[i] / (double) bytes_read;
+  for (int i = 0; i < 256; i++)
+    printf("DEBUG f[%d] = %f\n", i, frequencies[i]);
   return 0;
 }
 
@@ -28,7 +34,8 @@ int main(int argc, char *argv[]) {
   if (file == NULL)
     fail("Cannot open the given file.\n");
 
-  printf("Entropy: %f\n", entropy(file));
+  double e = entropy(file);
+  printf("DEBUG Entropy: %f\n", e);
 
   fclose(file);
 
