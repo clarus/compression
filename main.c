@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 void fail(const char message[]) {
   perror(message);
@@ -16,14 +17,18 @@ double entropy(FILE * file) {
     bytes_read++;
     occurencies[c]++;
   }
-  printf("DEBUG Bytes read: %d\n", bytes_read);
 
   double frequencies[256];
   for (int i = 0; i < 256; i++)
     frequencies[i] = (double) occurencies[i] / (double) bytes_read;
-  for (int i = 0; i < 256; i++)
-    printf("DEBUG f[%d] = %f\n", i, frequencies[i]);
-  return 0;
+
+  double result = 0;
+  for (int i = 0; i < 256; i++) {
+    double x = frequencies[i] * log2(frequencies[i]);
+    if (! isnan(x))
+      result -= x;
+  }
+  return result;
 }
 
 int main(int argc, char *argv[]) {
@@ -35,7 +40,7 @@ int main(int argc, char *argv[]) {
     fail("Cannot open the given file.\n");
 
   double e = entropy(file);
-  printf("DEBUG Entropy: %f\n", e);
+  printf("The entropy is %f bits.\n", e);
 
   fclose(file);
 

@@ -1,2 +1,2 @@
 default:
-	gcc -Wall -std=c99 main.c -o entropy
+	gcc -Wall -std=c99 main.c -o entropy -lm
