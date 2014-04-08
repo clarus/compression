@@ -2,14 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "common.h"
 #include "huffman.h"
 
 #define NB_SYMBOLS 256
-
-void fail(const char message[]) {
-  perror(message);
-  exit(1);
-}
 
 double entropy(FILE * file) {
   int occurencies[NB_SYMBOLS];
