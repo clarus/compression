@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "common.h"
 #include "heap.h"
 
@@ -45,7 +47,7 @@ void sort_down(heap_t *heap, int i) {
   }
 }
 
-void add(heap_t *heap, double value) {
+void heap_add(heap_t *heap, double value) {
   if (heap->nb_values < heap->size) {
     heap->values[heap->nb_values] = value;
     heap->nb_values++;
@@ -54,6 +56,22 @@ void add(heap_t *heap, double value) {
     fail("add: the heap is full.");
 }
 
-double get(heap_t *heap) {
-  return 0.0;
+double heap_get(heap_t *heap) {
+  if (heap->nb_values > 0) {
+    double result = heap->values[0];
+    heap->values[0] = heap->values[heap->nb_values - 1];
+    heap->nb_values--;
+    sort_down(heap, 0);
+    return result;
+  } else {
+    fail("get: the heap is empty.");
+    return 0.0;
+  }
+}
+
+void heap_print(heap_t *heap) {
+  printf("Heap nb_values: %d, size: %d\n[ ", heap->nb_values, (int) heap->size);
+  for (int i = 0; i < heap->nb_values; i++)
+    printf("%.2f ", heap->values[i]);
+  printf("]\n");
 }
