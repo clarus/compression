@@ -18,5 +18,5 @@ void displayTrees(int n, const tree trees[]) {
 }
 
 tree * initialTrees(int n, double frequencies[]) {
-  malloc()
+  return NULL;
 }
