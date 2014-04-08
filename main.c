@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "huffman.h"
+
 void fail(const char message[]) {
   perror(message);
   exit(1);
