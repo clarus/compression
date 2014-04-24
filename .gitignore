@@ -1,2 +1,4 @@
 entropy
 tests/
+*.sublime-project
+*.sublime-workspace

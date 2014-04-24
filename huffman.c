@@ -1,7 +1,6 @@
 #include "huffman.h"
 #include <stdio.h>
 
-
 void displayTree(const tree * tree, int level) {
   for (int i = 0; i < level; i++)
     printf("  ");
