@@ -31,8 +31,8 @@ void sort_up(heap_t * heap, int i) {
 }
 
 void sort_down(heap_t * heap, int i) {
-  if (left_son(i) < heap->size) {
-    if (right_son(i) < heap->size) {
+  if (left_son(i) < heap->nb_values) {
+    if (right_son(i) < heap->nb_values) {
       if (heap->values[left_son(i)] < heap->values[right_son(i)]) {
         if (exchange(heap, i, left_son(i)))
           sort_down(heap, left_son(i));
@@ -53,7 +53,7 @@ void heap_add(heap_t * heap, double value) {
     heap->nb_values++;
     sort_up(heap, heap->nb_values -  1);
   } else
-    fail("add: the heap is full.");
+    fail("heap_add: the heap is full.");
 }
 
 double heap_get(heap_t * heap) {
@@ -64,13 +64,13 @@ double heap_get(heap_t * heap) {
     sort_down(heap, 0);
     return result;
   } else {
-    fail("get: the heap is empty.");
+    fail("heap_get: the heap is empty.");
     return 0.0;
   }
 }
 
-void heap_print(heap_t * heap) {
-  printf("Heap nb_values: %d, size: %d\n[ ", heap->nb_values, (int) heap->size);
+void heap_print(const heap_t * heap) {
+  printf("[heap_t] nb_values: %d, size: %d\n[ ", heap->nb_values, (int) heap->size);
   for (int i = 0; i < heap->nb_values; i++)
     printf("%.2f ", heap->values[i]);
   printf("]\n");

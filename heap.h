@@ -11,6 +11,6 @@ typedef struct {
 
 void heap_add(heap_t * heap, double value);
 double heap_get(heap_t * heap);
-void heap_print(heap_t * heap);
+void heap_print(const heap_t * heap);
 
 #endif
