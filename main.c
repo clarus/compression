@@ -1,22 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "common.h"
 #include "entropy.h"
 
 int main(int argc, char * argv[]) {
-  if (argc != 2)
-    fail("One argument expected.\n");
+  if (argc < 2)
+    fail("At least one argument expected.\n");
   
-  FILE * file = fopen(argv[1], "r");
-  if (file == NULL)
-    fail("Cannot open the given file.\n");
+  if (strcmp(argv[1], "-entropy") == 0) {
+    if (argc != 3)
+      fail("Two arguments expected.");
+    else {
+      FILE * file = fopen(argv[2], "r");
+      if (file == NULL)
+        fail("Cannot open the given file.\n");
 
-  double e = entropy(file);
-  printf("The entropy is %.2f bits.\n", e);
+      double e = entropy(file);
+      printf("The entropy is %.2f bits.\n", e);
 
-  fclose(file);
+      fclose(file);
+    }
+  } else
+    fail("Unknown command line option.");
 
   return 0;
 }

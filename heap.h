@@ -5,7 +5,7 @@
 
 typedef struct {
   double * values;
-  size_t size;
+  int size;
   int nb_values;
 } heap_t;
 

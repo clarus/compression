@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 def test_entropy(file, entropy)
-  command = "./entropy test/#{file}"
+  command = "./etoile -entropy test/#{file}"
   output = `#{command}`
   expected_output = "The entropy is #{entropy} bits.\n"
   if output == expected_output
