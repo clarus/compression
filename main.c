@@ -7,6 +7,7 @@
 #include "entropy.h"
 #include "heap.h"
 #include "tree.h"
+#include "huffman.h"
 
 int main(int argc, char * argv[]) {
   if (argc < 2)
@@ -27,7 +28,7 @@ int main(int argc, char * argv[]) {
 
       fclose(file);
     }
-  } else if (strcmp(argv[1], "-heap") == 0) {
+  } /*else if (strcmp(argv[1], "-heap") == 0) {
     double values[64];
     heap_t heap = {values, 64, 0};
     int sample[] = {4, 6, 3, 7, 9, 3};
@@ -38,7 +39,7 @@ int main(int argc, char * argv[]) {
       printf("-> %d\n", (int) heap_get(&heap));
       heap_print(&heap);
     }
-  } else if (strcmp(argv[1], "-huffman") == 0) {
+  }*/ else if (strcmp(argv[1], "-huffman") == 0) {
     if (argc != 3)
       fail("Two arguments expected.");
     else {
@@ -52,6 +53,13 @@ int main(int argc, char * argv[]) {
       tree_init(trees, frequencies);
       tree_print(trees, 'a');
       tree_print(trees, '*');
+      int indexes[NB_SYMBOLS];
+      heap_t heap = {
+        .heap_indexes = indexes,
+        .heap_size = NB_SYMBOLS,
+        .heap_nb_values = 0
+      };
+      huffman_huffman(trees, heap);
 
       fclose(file);
     }
