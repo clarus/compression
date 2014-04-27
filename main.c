@@ -8,6 +8,7 @@
 #include "heap.h"
 #include "tree.h"
 #include "huffman.h"
+#include "bits.h"
 
 int main(int argc, char * argv[]) {
   if (argc < 2)
@@ -51,8 +52,6 @@ int main(int argc, char * argv[]) {
       entropy_frequencies(file, frequencies);
       tree_t trees[NB_TREES];
       tree_init(trees, frequencies);
-      tree_print(trees, 'a');
-      tree_print(trees, '*');
       int indexes[NB_SYMBOLS];
       heap_t heap = {
         .heap_indexes = indexes,
@@ -64,6 +63,8 @@ int main(int argc, char * argv[]) {
       // tree_print(trees, heap.heap_indexes[0]);
 
       fclose(file);
+
+      bits_write_file(argv[2], table);
     }
   } else
     fail("Unknown command line option.");
