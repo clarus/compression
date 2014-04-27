@@ -1,7 +1,6 @@
 #include "entropy.h"
+#include "common.h"
 #include <math.h>
-
-#define NB_SYMBOLS 256
 
 double entropy(FILE * file) {
   int occurencies[NB_SYMBOLS];
