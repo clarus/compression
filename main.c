@@ -59,8 +59,9 @@ int main(int argc, char * argv[]) {
         .heap_size = NB_SYMBOLS,
         .heap_nb_values = 0
       };
-      huffman_huffman(trees, &heap);
-      tree_print(trees, heap.heap_indexes[0]);
+      int table[NB_SYMBOLS][NB_SYMBOLS];
+      huffman_huffman(trees, &heap, table);
+      // tree_print(trees, heap.heap_indexes[0]);
 
       fclose(file);
     }

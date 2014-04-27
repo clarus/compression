@@ -5,7 +5,7 @@ typedef struct {
   double tree_frequency;
   enum { TREE_LEAF, TREE_NODE } tree_kind;
   union {
-    char tree_leaf;
+    int tree_leaf;
     struct { int tree_left; int tree_right; } tree_node;
   } tree_content;
 } tree_t;
