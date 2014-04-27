@@ -26,3 +26,13 @@ void tree_init(tree_t trees[], const double frequencies[]) {
     };
   }
 }
+
+tree_t tree_node(const tree_t trees[], int index1, int index2) {
+  return (tree_t) {
+    .tree_frequency =
+      trees[index1].tree_frequency + trees[index2].tree_frequency,
+    .tree_kind = TREE_NODE,
+    .tree_content = {
+      .tree_node = { .tree_left = index1, .tree_right = index2 } }
+  };
+}

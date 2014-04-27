@@ -4,6 +4,6 @@
 #include "heap.h"
 #include "tree.h"
 
-void huffman_huffman(tree_t trees[], heap_t heap);
+void huffman_huffman(tree_t trees[], heap_t * heap);
 
 #endif

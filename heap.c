@@ -64,20 +64,20 @@ void heap_add(const tree_t trees[], heap_t * heap, int index) {
 
 int heap_get(const tree_t trees[], heap_t * heap) {
   if (heap->heap_nb_values > 0) {
-    double result = frequency(trees, heap, 0);
+    int result = heap->heap_indexes[0];
     heap->heap_indexes[0] = heap->heap_indexes[heap->heap_nb_values - 1];
     heap->heap_nb_values--;
     sort_down(trees, heap, 0);
     return result;
   } else {
     fail("heap_get: the heap is empty.");
-    return 0.0;
+    return 0;
   }
 }
 
 void heap_print(const tree_t trees[], const heap_t * heap) {
   printf("[heap_t] nb_values: %d, size: %d\n[ ", heap->heap_nb_values, (int) heap->heap_size);
   for (int i = 0; i < heap->heap_nb_values; i++)
-    printf("%.2f ", frequency(trees, heap, i));
+    printf("%.3f ", frequency(trees, heap, i));
   printf("]\n");
 }
