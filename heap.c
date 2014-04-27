@@ -16,10 +16,10 @@ int right_son(int i) {
 }
 
 int exchange(heap_t * heap, int i, int j) {
-  if (heap->values[i] > heap->values[j]) {
-    double tmp = heap->values[i];
-    heap->values[i] = heap->values[j];
-    heap->values[j] = tmp;
+  if (heap->heap_values[i] > heap->heap_values[j]) {
+    double tmp = heap->heap_values[i];
+    heap->heap_values[i] = heap->heap_values[j];
+    heap->heap_values[j] = tmp;
     return 1;
   } else
     return 0;
@@ -31,9 +31,9 @@ void sort_up(heap_t * heap, int i) {
 }
 
 void sort_down(heap_t * heap, int i) {
-  if (left_son(i) < heap->nb_values) {
-    if (right_son(i) < heap->nb_values) {
-      if (heap->values[left_son(i)] < heap->values[right_son(i)]) {
+  if (left_son(i) < heap->heap_nb_values) {
+    if (right_son(i) < heap->heap_nb_values) {
+      if (heap->heap_values[left_son(i)] < heap->heap_values[right_son(i)]) {
         if (exchange(heap, i, left_son(i)))
           sort_down(heap, left_son(i));
       } else {
@@ -48,19 +48,19 @@ void sort_down(heap_t * heap, int i) {
 }
 
 void heap_add(heap_t * heap, double value) {
-  if (heap->nb_values < heap->size) {
-    heap->values[heap->nb_values] = value;
-    heap->nb_values++;
-    sort_up(heap, heap->nb_values -  1);
+  if (heap->heap_nb_values < heap->heap_size) {
+    heap->heap_values[heap->heap_nb_values] = value;
+    heap->heap_nb_values++;
+    sort_up(heap, heap->heap_nb_values -  1);
   } else
     fail("heap_add: the heap is full.");
 }
 
 double heap_get(heap_t * heap) {
-  if (heap->nb_values > 0) {
-    double result = heap->values[0];
-    heap->values[0] = heap->values[heap->nb_values - 1];
-    heap->nb_values--;
+  if (heap->heap_nb_values > 0) {
+    double result = heap->heap_values[0];
+    heap->heap_values[0] = heap->heap_values[heap->heap_nb_values - 1];
+    heap->heap_nb_values--;
     sort_down(heap, 0);
     return result;
   } else {
@@ -70,8 +70,8 @@ double heap_get(heap_t * heap) {
 }
 
 void heap_print(const heap_t * heap) {
-  printf("[heap_t] nb_values: %d, size: %d\n[ ", heap->nb_values, (int) heap->size);
-  for (int i = 0; i < heap->nb_values; i++)
-    printf("%.2f ", heap->values[i]);
+  printf("[heap_t] nb_values: %d, size: %d\n[ ", heap->heap_nb_values, (int) heap->heap_size);
+  for (int i = 0; i < heap->heap_nb_values; i++)
+    printf("%.2f ", heap->heap_values[i]);
   printf("]\n");
 }

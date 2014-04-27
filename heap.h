@@ -4,9 +4,9 @@
 #include <stddef.h>
 
 typedef struct {
-  double * values;
-  int size;
-  int nb_values;
+  double * heap_values;
+  int heap_size;
+  int heap_nb_values;
 } heap_t;
 
 void heap_add(heap_t * heap, double value);

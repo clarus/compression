@@ -1,8 +1,9 @@
 #include "huffman.h"
 #include "common.h"
 #include "heap.h"
+#include "tree.h"
 #include <stdio.h>
 
-heap_t * huffman(const double frequencies[NB_SYMBOLS]) {
-  return NULL;
+void huffman(tree_t trees[], heap_t heap) {
+  return;
 }

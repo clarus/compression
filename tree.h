@@ -2,12 +2,12 @@
 #define TREE_H
 
 typedef struct {
-  double frequency;
-  enum { LEAF, NODE } kind;
+  double tree_frequency;
+  enum { TREE_LEAF, TREE_NODE } tree_kind;
   union {
-    char leaf;
-    struct { int left; int right; } node;
-  } content;
+    char tree_leaf;
+    struct { int tree_left; int tree_right; } tree_node;
+  } tree_content;
 } tree_t;
 
 void tree_print(const tree_t trees[], int i);
