@@ -2,6 +2,6 @@
 #include <stdlib.h>
 
 void fail(const char message[]) {
-  perror(message);
+  fprintf(stderr, "%s\n", message);
   exit(1);
 }

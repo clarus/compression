@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
-double entropy(FILE * file);
+void entropy_frequencies(FILE * file, double frequencies[]);
+double entropy_entropy(const double frequencies[]);
 
 #endif

@@ -1,14 +1,6 @@
+#include "tree.h"
 #include "common.h"
 #include <stdio.h>
-
-typedef struct {
-  double frequency;
-  enum { LEAF, NODE } kind;
-  union {
-    char leaf;
-    struct { int left; int right; } node;
-  } content;
-} tree_t;
 
 void tree_print(const tree_t trees[], int i) {
   printf("%f( ", trees[i].frequency);
@@ -22,7 +14,7 @@ void tree_print(const tree_t trees[], int i) {
     tree_print(trees, trees[i].content.node.right);
     break;
   }
-  printf(" )");
+  printf(" )\n");
 }
 
 void tree_init(tree_t trees[], const double frequencies[]) {

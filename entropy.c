@@ -2,7 +2,7 @@
 #include "common.h"
 #include <math.h>
 
-double entropy(FILE * file) {
+void entropy_frequencies(FILE * file, double frequencies[]) {
   int occurencies[NB_SYMBOLS];
   for (int i = 0; i < NB_SYMBOLS; i++)
     occurencies[i] = 0;
@@ -13,10 +13,11 @@ double entropy(FILE * file) {
     occurencies[c]++;
   }
 
-  double frequencies[NB_SYMBOLS];
   for (int i = 0; i < NB_SYMBOLS; i++)
     frequencies[i] = (double) occurencies[i] / (double) bytes_read;
+}
 
+double entropy_entropy(const double frequencies[]) {
   double result = 0;
   for (int i = 0; i < NB_SYMBOLS; i++) {
     double x = frequencies[i] * log2(frequencies[i]);

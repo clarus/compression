@@ -6,6 +6,7 @@
 #include "common.h"
 #include "entropy.h"
 #include "heap.h"
+#include "tree.h"
 
 int main(int argc, char * argv[]) {
   if (argc < 2)
@@ -19,14 +20,16 @@ int main(int argc, char * argv[]) {
       if (file == NULL)
         fail("Cannot open the given file.\n");
 
-      double e = entropy(file);
+      double frequencies[NB_SYMBOLS];
+      entropy_frequencies(file, frequencies);
+      double e = entropy_entropy(frequencies);
       printf("The entropy is %.2f bits.\n", e);
 
       fclose(file);
     }
   } else if (strcmp(argv[1], "-heap") == 0) {
-    double values[100];
-    heap_t heap = {values, 100, 0};
+    double values[64];
+    heap_t heap = {values, 64, 0};
     int sample[] = {4, 6, 3, 7, 9, 3};
     for (int i = 0; i < 6; i++)
       heap_add(&heap, sample[i]);
@@ -34,6 +37,23 @@ int main(int argc, char * argv[]) {
     for (int i = 0; i < 6; i++) {
       printf("-> %d\n", (int) heap_get(&heap));
       heap_print(&heap);
+    }
+  } else if (strcmp(argv[1], "-huffman") == 0) {
+    if (argc != 3)
+      fail("Two arguments expected.");
+    else {
+      FILE * file = fopen(argv[2], "r");
+      if (file == NULL)
+        fail("Cannot open the given file.\n");
+
+      double frequencies[NB_SYMBOLS];
+      entropy_frequencies(file, frequencies);
+      tree_t trees[NB_TREES];
+      tree_init(trees, frequencies);
+      tree_print(trees, 'a');
+      tree_print(trees, '*');
+
+      fclose(file);
     }
   } else
     fail("Unknown command line option.");
