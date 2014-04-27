@@ -2,16 +2,16 @@
 #include "common.h"
 #include <stdio.h>
 
-void tree_print(const tree_t trees[], int i) {
-  printf("%f( ", trees[i].tree_frequency);
-  switch (trees[i].tree_kind) {
+void tree_print(const tree_t trees[], int index) {
+  printf("%f( ", trees[index].tree_frequency);
+  switch (trees[index].tree_kind) {
   case TREE_LEAF:
-    printf("%c", trees[i].tree_content.tree_leaf);
+    printf("%c", trees[index].tree_content.tree_leaf);
     break;
   case TREE_NODE:
-    tree_print(trees, trees[i].tree_content.tree_node.tree_left);
+    tree_print(trees, trees[index].tree_content.tree_node.tree_left);
     printf(" ");
-    tree_print(trees, trees[i].tree_content.tree_node.tree_right);
+    tree_print(trees, trees[index].tree_content.tree_node.tree_right);
     break;
   }
   printf(" )\n");

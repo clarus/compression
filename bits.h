@@ -2,14 +2,13 @@
 #define BITS_H
 
 #include "common.h"
-#include <stdio.h>
+#include "tree.h"
 
 typedef struct {
-  FILE * bits_file;
   int bits_byte;
   int bits_count;
 } bits_t;
 
-void bits_write_file(const char file_name[], int table[][NB_SYMBOLS]);
+void bits_write_file(const char file_name[], const tree_t trees[], int tree_index, int table[][NB_SYMBOLS]);
 
 #endif

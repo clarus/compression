@@ -10,7 +10,7 @@ typedef struct {
   } tree_content;
 } tree_t;
 
-void tree_print(const tree_t trees[], int i);
+void tree_print(const tree_t trees[], int index);
 void tree_init(tree_t trees[], const double frequencies[]);
 tree_t tree_node(const tree_t trees[], int index1, int index2);
 

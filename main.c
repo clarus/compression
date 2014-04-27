@@ -64,7 +64,7 @@ int main(int argc, char * argv[]) {
 
       fclose(file);
 
-      bits_write_file(argv[2], table);
+      bits_write_file(argv[2], trees, heap.heap_indexes[0], table);
     }
   } else
     fail("Unknown command line option.");
