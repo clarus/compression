@@ -131,6 +131,18 @@ void bits_read_file(const char file_name[]) {
   tree_t trees[NB_TREES];
   read_tree(&bits, trees, 0);
 
+  // Get the file content.
+  for (int i = 0; i < size; i++) {
+    int tree_index = 0;
+    while (trees[tree_index].tree_kind == TREE_NODE) {
+      if (read_bit(&bits) == 0)
+        tree_index = trees[tree_index].tree_content.tree_node.tree_left;
+      else
+        tree_index = trees[tree_index].tree_content.tree_node.tree_right;
+    }
+    fputc(trees[tree_index].tree_content.tree_leaf, stdout);
+  }
+
   // printf("original size: %d\n", size);
   // tree_print(trees, 0);
 }
