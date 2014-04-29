@@ -53,12 +53,42 @@ void flush(t * bits) {
 int read_bit(t * bits) {
   if (bits->count == 0) {
     bits->byte = fgetc(bits->file);
-    if (bits->byte == EOF)
-      fail("read_bit: end of file not expected.");
+    // if (bits->byte == EOF)
+    //   fail("read_bit: end of file not expected.");
     bits->count = 8;
   }
   bits->count--;
   return (bits->byte >> bits->count) & 1;
+}
+
+int read_byte(t * bits) {
+  int byte = 0;
+  for (int i = 0; i < 8; i++)
+    byte += read_bit(bits) << (7 - i);
+  return byte;
+}
+
+int read_tree(t * bits, tree_t trees[], int first_index) {
+  if (read_bit(bits) == 0) {
+    int c = read_byte(bits);
+    trees[first_index] = (tree_t) {
+      .tree_frequency = 0.0,
+      .tree_kind = TREE_LEAF,
+      .tree_content = { .tree_leaf = c }
+    };
+    return first_index + 1;
+  } else {
+    int right_index = read_tree(bits, trees, first_index + 1);
+    int next_index = read_tree(bits, trees, right_index);
+    trees[first_index] = (tree_t) {
+      .tree_frequency = 0.0,
+      .tree_kind = TREE_NODE,
+      .tree_content = {
+        .tree_node = { .tree_left = first_index + 1, .tree_right = right_index }
+      }
+    };
+    return next_index;
+  }
 }
 
 void bits_write_file(const char file_name[], const tree_t trees[], int tree_index, int table[][NB_SYMBOLS]) {
@@ -97,5 +127,10 @@ void bits_read_file(const char file_name[]) {
   for (int i = 0; i < 4; i++)
     size += fgetc(file) << (8 * (3 - i));
 
-  printf("original size: %d\n", size);
+  // Get the Huffman tree.
+  tree_t trees[NB_TREES];
+  read_tree(&bits, trees, 0);
+
+  // printf("original size: %d\n", size);
+  // tree_print(trees, 0);
 }
