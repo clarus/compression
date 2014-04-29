@@ -12,7 +12,11 @@
 
 int main(int argc, char * argv[]) {
   if (argc < 2)
-    fail("At least one argument expected.");
+    fail("Usage: etoile option file\n\
+Options:\n\
+  -entropy    the entropy at the byte level\n\
+  -zip        compress the file on the standard output\n\
+  -unzip      uncompress the file on the standard output");
   
   if (strcmp(argv[1], "-entropy") == 0) {
     if (argc != 3)
@@ -29,7 +33,7 @@ int main(int argc, char * argv[]) {
 
       fclose(file);
     }
-  } else if (strcmp(argv[1], "-huffman") == 0) {
+  } else if (strcmp(argv[1], "-zip") == 0) {
     if (argc != 3)
       fail("Two arguments expected.");
     else {
