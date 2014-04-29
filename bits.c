@@ -4,12 +4,14 @@
 #include <sys/types.h>
 
 typedef struct {
+  FILE * file;
   int byte;
   int count;
 } t;
 
-t new() {
+t new(FILE * file) {
   return (t) {
+    .file = file,
     .byte = 0,
     .count = 0
   };
@@ -20,7 +22,7 @@ void write_bit(t * bits, int bit) {
   bits->byte += bit;
   bits->count++;
   if (bits->count == 8) {
-    fputc(bits->byte, stdout);
+    fputc(bits->byte, bits->file);
     bits->byte = bits->count = 0;
   }
 }
@@ -45,7 +47,18 @@ void write_tree(t * bits, const tree_t trees[], int index) {
 }
 
 void flush(t * bits) {
-  fputc(bits->byte << (8 - bits->count), stdout);
+  fputc(bits->byte << (8 - bits->count), bits->file);
+}
+
+int read_bit(t * bits) {
+  if (bits->count == 0) {
+    bits->byte = fgetc(bits->file);
+    if (bits->byte == EOF)
+      fail("read_bit: end of file not expected.");
+    bits->count = 8;
+  }
+  bits->count--;
+  return (bits->byte >> bits->count) & 1;
 }
 
 void bits_write_file(const char file_name[], const tree_t trees[], int tree_index, int table[][NB_SYMBOLS]) {
@@ -64,11 +77,25 @@ void bits_write_file(const char file_name[], const tree_t trees[], int tree_inde
   // Print the Huffman code of each character.
   FILE * file = fopen(file_name, "r");
   if (file == NULL)
-    fail("Cannot open the given file.\n");
+    fail("Cannot open the given file.");
   int c;
   while ((c = fgetc(file)) != EOF)
     for (int i = 0; table[c][i] != -1; i++)
       write_bit(&bits, table[c][i]);
   flush(&bits);
   fclose(file);
+}
+
+void bits_read_file(const char file_name[]) {
+  FILE * file = fopen(file_name, "r");
+  if (file == NULL)
+    fail("Cannot open the given file.");
+  t bits = new(file);
+
+  // Get the original file size.
+  int size = 0;
+  for (int i = 0; i < 4; i++)
+    size += fgetc(file) << (8 * (3 - i));
+
+  printf("original size: %d\n", size);
 }

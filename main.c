@@ -12,15 +12,15 @@
 
 int main(int argc, char * argv[]) {
   if (argc < 2)
-    fail("At least one argument expected.\n");
+    fail("At least one argument expected.");
   
   if (strcmp(argv[1], "-entropy") == 0) {
     if (argc != 3)
-      fail("Two arguments expected.");
+      fail("Two arguments expecte");
     else {
       FILE * file = fopen(argv[2], "r");
       if (file == NULL)
-        fail("Cannot open the given file.\n");
+        fail("Cannot open the given file.");
 
       double frequencies[NB_SYMBOLS];
       entropy_frequencies(file, frequencies);
@@ -29,24 +29,13 @@ int main(int argc, char * argv[]) {
 
       fclose(file);
     }
-  } /*else if (strcmp(argv[1], "-heap") == 0) {
-    double values[64];
-    heap_t heap = {values, 64, 0};
-    int sample[] = {4, 6, 3, 7, 9, 3};
-    for (int i = 0; i < 6; i++)
-      heap_add(&heap, sample[i]);
-    heap_print(&heap);
-    for (int i = 0; i < 6; i++) {
-      printf("-> %d\n", (int) heap_get(&heap));
-      heap_print(&heap);
-    }
-  }*/ else if (strcmp(argv[1], "-huffman") == 0) {
+  } else if (strcmp(argv[1], "-huffman") == 0) {
     if (argc != 3)
       fail("Two arguments expected.");
     else {
       FILE * file = fopen(argv[2], "r");
       if (file == NULL)
-        fail("Cannot open the given file.\n");
+        fail("Cannot open the given file.");
 
       double frequencies[NB_SYMBOLS];
       entropy_frequencies(file, frequencies);
@@ -65,6 +54,12 @@ int main(int argc, char * argv[]) {
       fclose(file);
 
       bits_write_file(argv[2], trees, heap.heap_indexes[0], table);
+    }
+  } else if (strcmp(argv[1], "-unzip") == 0) {
+    if (argc != 3)
+      fail("Two arguments expected.");
+    else {
+      bits_read_file(argv[2]);
     }
   } else
     fail("Unknown command line option.");
