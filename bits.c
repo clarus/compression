@@ -3,10 +3,11 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+// A structure to read / write on a file bit by bit.
 typedef struct {
   FILE * file;
-  int byte;
-  int count;
+  int byte; // The current byte to read / write once it will be full.
+  int count; // The current number of relevant bits in the byte field.
 } t;
 
 t new(FILE * file) {
@@ -17,6 +18,7 @@ t new(FILE * file) {
   };
 }
 
+// Write a bit.
 void write_bit(t * bits, int bit) {
   bits->byte *= 2;
   bits->byte += bit;
@@ -27,29 +29,34 @@ void write_bit(t * bits, int bit) {
   }
 }
 
+// Write a byte.
 void write_byte(t * bits, int byte) {
   for (int i = 0; i < 8; i++)
     write_bit(bits, (byte >> (7 - i)) & 1);
 }
 
+// Write the Huffman tree trees[index]. We do a DFS printing the contents of the
+// tree.
 void write_tree(t * bits, const tree_t trees[], int index) {
   switch (trees[index].tree_kind) {
   case TREE_LEAF:
-    write_bit(bits, 0);
+    write_bit(bits, 0); // 0 for a leaf
     write_byte(bits, trees[index].tree_content.tree_leaf);
     break;
   case TREE_NODE:
-    write_bit(bits, 1);
+    write_bit(bits, 1); // 1 for a node
     write_tree(bits, trees, trees[index].tree_content.tree_node.tree_left);
     write_tree(bits, trees, trees[index].tree_content.tree_node.tree_right);
     break;
   }
 }
 
+// Print the last byte even if it is not full.
 void flush(t * bits) {
   fputc(bits->byte << (8 - bits->count), bits->file);
 }
 
+// Read a bit.
 int read_bit(t * bits) {
   if (bits->count == 0) {
     bits->byte = fgetc(bits->file);
@@ -61,6 +68,7 @@ int read_bit(t * bits) {
   return (bits->byte >> bits->count) & 1;
 }
 
+// Read a byte.
 int read_byte(t * bits) {
   int byte = 0;
   for (int i = 0; i < 8; i++)
@@ -68,8 +76,11 @@ int read_byte(t * bits) {
   return byte;
 }
 
+// Read a Huffman tree written by write_tree. first_index is the index to start
+// importing in trees. The returned index is the next index to be read.
 int read_tree(t * bits, tree_t trees[], int first_index) {
   if (read_bit(bits) == 0) {
+    // Leaf case.
     int c = read_byte(bits);
     trees[first_index] = (tree_t) {
       .tree_frequency = 0.0,
@@ -78,6 +89,7 @@ int read_tree(t * bits, tree_t trees[], int first_index) {
     };
     return first_index + 1;
   } else {
+    // Node case.
     int right_index = read_tree(bits, trees, first_index + 1);
     int next_index = read_tree(bits, trees, right_index);
     trees[first_index] = (tree_t) {
@@ -91,7 +103,8 @@ int read_tree(t * bits, tree_t trees[], int first_index) {
   }
 }
 
-void bits_write_file(const char file_name[], const tree_t trees[], int tree_index, int table[][NB_SYMBOLS]) {
+void bits_write_file(const char file_name[], const tree_t trees[],
+  int tree_index, int table[][NB_SYMBOLS]) {
   t bits = new(stdout);
 
   // Print the total size of the file to compress in bytes.

@@ -20,7 +20,7 @@ Options:\n\
   
   if (strcmp(argv[1], "-entropy") == 0) {
     if (argc != 3)
-      fail("Two arguments expecte");
+      fail("Two arguments expected.");
     else {
       FILE * file = fopen(argv[2], "r");
       if (file == NULL)
