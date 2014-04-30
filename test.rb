@@ -14,7 +14,13 @@ end
 
 def test_compression
   Dir.glob ("test/*") do |file|
-    puts `./etoile -zip #{file} |./etoile -unzip /dev/stdin |diff -s - #{file}`
+    cmd = "./etoile -zip #{file} |./etoile -unzip /dev/stdin |diff - #{file}"
+    if system(cmd)
+      print " \e[1;32m✓\e[0m "
+    else
+      print " \e[31m✗\e[0m "
+    end
+    puts cmd
   end
 end
 
