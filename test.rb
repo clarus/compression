@@ -12,6 +12,15 @@ def test_entropy(file, entropy)
   puts "#{command} ==> #{expected_output.inspect}"
 end
 
+def test_compression
+  Dir.glob ("test/*") do |file|
+    puts `./etoile -zip #{file} |./etoile -unzip /dev/stdin |diff -s - #{file}`
+  end
+end
+
 puts "\e[1mChecking entropy:\e[0m"
 test_entropy("random", "7.99")
 test_entropy("lorem.txt", "4.13")
+puts
+puts "\e[1mChecking compression:\e[0m"
+test_compression()
